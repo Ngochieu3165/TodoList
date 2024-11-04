@@ -1,0 +1,111 @@
+﻿<Window x:Class="WPFApp.UpdateTask"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="UpdateTask" Height="490" Width="830"
+        AllowsTransparency="True" 
+        Background="Transparent" 
+        ResizeMode="NoResize"  
+        FontFamily="{StaticResource Comic Sans MS 400}" 
+        WindowStyle="None">
+
+    <Border BorderThickness="2" BorderBrush="Transparent" Background="#D1E8E2" CornerRadius="10">
+        <Grid>
+            <Label Content="Update a task" 
+                   HorizontalAlignment="Left" 
+                   Margin="29,10,0,0" 
+                   VerticalAlignment="Top" 
+                   FontSize="30" 
+                   Foreground="#2c3532" 
+                   FontWeight="Bold"/>
+
+            <Rectangle HorizontalAlignment="Left" 
+                       Height="369" 
+                       Width="578" 
+                       Margin="20,65,0,0" 
+                       Stroke="Black" 
+                       VerticalAlignment="Top" 
+                       Fill="#E0E0E0" 
+                       RadiusX="20" 
+                       RadiusY="20"/>
+
+            <Label Content="Title" 
+                   HorizontalAlignment="Left" 
+                   Margin="29,79,0,0" 
+                   VerticalAlignment="Top" 
+                   FontSize="17" 
+                   Foreground="#2c3532" 
+                   Background="Transparent" 
+                   FontWeight="Bold"/>
+
+            <TextBox x:Name="TitleTextBox" 
+                      HorizontalAlignment="Left" 
+                      Margin="139,79,0,0" 
+                      TextWrapping="Wrap" 
+                      VerticalAlignment="Top" 
+                      Width="340" 
+                      Height="32" 
+                      BorderBrush="#2c3532"  
+                      Background="#ffffff" 
+                      FontSize="16" />
+
+            <Label Content="Description" 
+                   HorizontalAlignment="Left" 
+                   Margin="29,131,0,0" 
+                   VerticalAlignment="Top" 
+                   FontSize="17" 
+                   Foreground="#2c3532"  
+                   Background="Transparent" 
+                   FontWeight="Bold"/>
+
+            <TextBox x:Name="DescriptionTextbox" 
+                      HorizontalAlignment="Left" 
+                      Margin="139,131,0,0" 
+                      TextWrapping="Wrap" 
+                      VerticalAlignment="Top" 
+                      Width="446" 
+                      Height="97" 
+                      BorderBrush="#2c3532" 
+                      Background="#ffffff" 
+                      FontSize="14" />
+
+            <Label Content="Date" 
+                   HorizontalAlignment="Left" 
+                   Margin="29,250,0,0" 
+                   VerticalAlignment="Top" 
+                   FontSize="17" 
+                   Foreground="#2c3532" 
+                   Background="Transparent" 
+                   FontWeight="Bold"/>
+
+            <DatePicker x:Name="PeriodDatePicker" 
+                         HorizontalAlignment="Left" 
+                         Margin="139,250,0,0" 
+                         VerticalAlignment="Top" 
+                         Width="165" 
+                         Height="32" 
+                         BorderBrush="#2c3532" 
+                         Background="#ffffff" 
+                         FontSize="14" />
+
+            <Button x:Name="UpdateButton" 
+                    Style="{StaticResource CustomButtonStyle}"
+                    Content="Update" 
+                    HorizontalAlignment="Left" 
+                    Margin="701,389,0,0" 
+                    VerticalAlignment="Top" 
+                    Background="#389583" 
+                    Foreground="White" 
+                    Click="UpdateButton_Click"/>
+
+            <Button x:Name="BackButton" 
+                    Style="{StaticResource CustomButtonStyle}"
+                    Content="Back" 
+                    HorizontalAlignment="Left" 
+                    Margin="607,389,0,0" 
+                    VerticalAlignment="Top" 
+                    Background="#ab3b61" 
+                    Foreground="White" 
+                    Click="CancelButton_Click"/>
+        </Grid>
+    </Border>
+</Window>

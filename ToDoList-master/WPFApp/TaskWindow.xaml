@@ -1,0 +1,222 @@
+﻿<Window x:Class="WPFApp.TaskWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFApp" 
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        mc:Ignorable="d"
+        Title="TaskWindow" Height="700" Width="1050"
+        ResizeMode="NoResize" AllowsTransparency="True" WindowStyle="None" 
+        Background="Transparent" WindowStartupLocation="CenterScreen"
+        FontFamily="{StaticResource Comic Sans MS 400}"
+    >
+    <Window.Resources>
+        <Style TargetType="ScrollBar">
+            <Setter Property="Width" Value="8"/>
+            <!-- Độ rộng thanh cuộn -->
+            <Setter Property="Background" Value="Transparent"/>
+            <!-- Màu nền -->
+            <Setter Property="Opacity" Value="0.7"/>
+            <!-- Độ trong suốt -->
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid>
+                            <Track Name="PART_Track" IsDirectionReversed="true">
+                                <Track.Thumb>
+                                    <Thumb Background="#e3e2de" 
+                                       Margin="0" 
+                                       Cursor="Arrow"/>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Border Background="#F5F5F5" CornerRadius="10" MouseDown="Border_MouseDown">
+        <Grid>
+            <!-- Define a grid with two columns: Sidebar (1/5) and Main Content (4/5) -->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.3*" />
+                <!-- Sidebar -->
+                <ColumnDefinition Width="4*" />
+                <!-- Main Content -->
+            </Grid.ColumnDefinitions>
+
+            <!-- Sidebar Menu -->
+            <Border Background="#E0E0E0" CornerRadius="10,0,0,10" Padding="5" Grid.Column="0" VerticalAlignment="Stretch">
+                <StackPanel Margin="0,20,0,20">
+                    <!-- Task Button with Icon -->
+                    <Button Background="#E0E0E0" Foreground="#8EE4AF" BorderThickness="0">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <fa:ImageAwesome Style="{StaticResource TaskICon}"  Width="32" Height="32" Margin="0,0,10,0"/>
+                        </StackPanel>
+                    </Button>
+
+                    <!-- Bin Button with Icon -->
+                    <Button Background="#E0E0E0" Foreground="#8EE4AF" BorderThickness="0" Click="BinButton_Click">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                            <fa:ImageAwesome Style="{StaticResource TrashIcon}"  Width="32" Height="32" Margin="0,20,10,0"/>
+                        </StackPanel>
+                    </Button>
+                    <!-- ShowTeam Button with Icon -->
+                    <Button Background="#E0E0E0" Foreground="#8EE4AF" BorderThickness="0" Click="ShowTeamsButton_Click">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <fa:ImageAwesome Style="{StaticResource ShowTeamIcon}" Width="32" Height="32" Margin="0,20,10,0"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Border>
+
+            <!-- Main Content -->
+            <Grid Grid.Column="1" Margin="10" Background="#F5F5F5">
+                <!-- Define two columns in the main content area -->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <!-- Task List Column -->
+                    <ColumnDefinition Width="3*" />
+                    <!-- Task Details Column -->
+                </Grid.ColumnDefinitions>
+
+                <!-- Task List Grid -->
+                <Grid Grid.Column="0" Opacity="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60"/>
+                        <RowDefinition Height="42"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Task Label -->
+                    <Label Content="Tasks" 
+                           VerticalAlignment="Center"
+                           Padding="20 0 0 0"
+                           FontSize="24"
+                           FontWeight="Bold"
+                           IsHitTestVisible="False" Height="32"
+                           Foreground="#05396b"/>
+
+                    <!-- Add new Task Button -->
+                    <Button Style="{StaticResource CustomAddButtonStyle}"
+                    HorizontalAlignment="Left"
+                     VerticalAlignment="Center"
+                     Height="32"
+                     Width="35"
+                     Margin="97,0,0,0"
+                      Command="{Binding IOpenNewWindow}"
+                     Click="NewTaskButton_Click">
+                        <fa:ImageAwesome Style="{StaticResource AddIcon}" Width="16" Height="16"/>
+                    </Button>
+
+
+                    <!-- Search Task Bar -->
+                    <TextBox x:Name="TaskSearchBox" TextChanged="TaskSearchBox_TextChanged"
+                             Grid.Row="1"
+                             Margin="20,0,2,2"
+                             FontSize="14"
+                             Padding="10"
+                             Background="#8de4af"
+                             BorderBrush="#5cdb94"
+                             BorderThickness="1"
+                             Style="{StaticResource RoundedTextBoxStyle}"/>
+
+                    <!-- Placeholder for Search Bar -->
+                    <Label IsHitTestVisible="False"
+                           Content="Search Tasks..."
+                           Grid.Row="1"
+                           VerticalAlignment="Center"
+                           Margin="40,0,0,0"
+                           Foreground="Gray"
+                           Visibility="{Binding Text.IsEmpty, ElementName=TaskSearchBox, Converter={StaticResource BooleanToVisibilityConverter}}" Height="26"/>
+
+                    <!-- Search Button -->
+                    <Button Grid.Row="1"
+                     Grid.Column="1"
+                     HorizontalAlignment="Right"
+                     VerticalAlignment="Center"
+                     Padding="0"
+                     Background="Transparent"
+                     BorderBrush="Transparent"
+                     Height="40"
+                     Width="40"
+                     Click="SearchButton_Click">
+                        <Viewbox Width="16" Height="16" Margin="0">
+                            <fa:ImageAwesome Style="{StaticResource SearchIcon}" Width="20" Height="20" Margin="0" />
+                        </Viewbox>
+                    </Button>
+
+
+                    <!-- List View For Task Items with ScrollViewer -->
+                    <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Margin="0,20,0,20">
+                        <ItemsControl x:Name="TaskListView">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <local:TaskListItem 
+                    Title="{Binding Title}" 
+                    Description="{Binding Description}"
+                    DueDate="{Binding DueDate}" 
+                    Id="{Binding Id}"
+                    TeamId="{Binding TeamId}"
+                    IsCompleted="{Binding IsCompleted}"
+                                        TaskSelected="TaskListItem_TaskSelected"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+
+                <!-- Task Details -->
+                <StackPanel Grid.Column="1" Margin="5">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5">
+                        <!-- Minimize Button -->
+                        <Button Style="{StaticResource RoundButtonStyle}" Width="30" Height="30" Click="MinimizeButton_Click">
+                            <fa:ImageAwesome Style="{StaticResource MinimizeIcon}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="16" Height="16"/>
+                        </Button>
+
+                        <!-- Maximize Button -->
+                        <Button Style="{StaticResource RoundButtonStyle}" Width="30" Height="30" Click="MaximizeButton_Click">
+                            <fa:ImageAwesome Style="{StaticResource MaximizeIcon}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="16" Height="16"/>
+                        </Button>
+
+                        <!-- Close Button -->
+                        <Button Style="{StaticResource RoundButtonStyle}" Width="30" Height="30" Click="CloseButton_Click">
+                            <fa:ImageAwesome Style="{StaticResource CloseIcon}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="16" Height="16"/>
+                        </Button>
+                    </StackPanel>
+
+                    <TextBlock x:Name="TaskTitleTextBlock" FontSize="20" FontWeight="Bold" Margin="0,10,0,10" Foreground="#05396b"/>
+
+                    <!-- ScrollViewer for Task Description -->
+                    <ScrollViewer x:Name="TaskDescriptionScrollViewer"
+                                  VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Disabled"
+                                  MaxHeight="100">
+                        <TextBlock Text="{Binding Description}" 
+                                   TextWrapping="Wrap"/>
+                    </ScrollViewer>
+
+                    <Border Background="#5cdb94" 
+                            Padding="10" 
+                            CornerRadius="5" 
+                            Margin="0,5" 
+                            HorizontalAlignment="Left">
+                        <TextBlock x:Name="DueDateTextBlock" 
+                                   FontSize="14" 
+                                   HorizontalAlignment="Left"/>
+                    </Border>
+
+                    <!-- Buttons for Delete, Update, Edit -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10">
+                        <Button Content="Delete" Style="{StaticResource CustomButtonStyle}" Background="Red" Foreground="White" Click="DeleteTaskButton_Click"/>
+                        <Button Content="Update" Style="{StaticResource CustomButtonStyle}" Background="#389583" Foreground="White" Click="UpdateTaskButton_Click"/>
+                        <Button Content="Check State" Style="{StaticResource CustomButtonStyle}" Background="#44318d" Foreground="White" Click="CheckStateButton_Click"/>
+                    </StackPanel>
+
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>
